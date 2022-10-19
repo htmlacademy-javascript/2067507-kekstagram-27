@@ -1,3 +1,2 @@
-import {createPhotoDesctiptions} from './data.js';
+import './small-photo.js';
 
-createPhotoDesctiptions();

@@ -72,3 +72,5 @@ const createPhotoDesctiption = (param) => {
 const createPhotoDesctiptions = createPhotoDesctiption(OBJ_NUMBER);
 
 export {createPhotoDesctiptions};
+
+
