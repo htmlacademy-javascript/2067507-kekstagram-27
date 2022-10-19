@@ -9,22 +9,20 @@ const miniContainer = document.querySelector('.pictures');
 const photoFragment = document.createDocumentFragment();
 
 
-const copyPhoto = (param) => {
-  for (let i = 0; i < param.length; i++) {
-    const photoElement = picture.cloneNode(true);
-    photoElement.querySelector('.picture__img').src = param[i].url;
-    photoElement.querySelector('.picture__likes').textContent = param[i].likes;
-    photoElement.querySelector('.picture__comments').textContent = param[i].comments.length;
-    photoFragment.appendChild(photoElement);
-  }
-};
+createPhotoDesctiptions.forEach((item) => {
+  const photoElement = picture.cloneNode(true);
+  photoElement.querySelector('.picture__img').src = item.url;
+  photoElement.querySelector('.picture__likes').textContent = item.likes;
+  photoElement.querySelector('.picture__comments').textContent = item.comments.length;
+  photoFragment.appendChild(photoElement);
+});
 
-copyPhoto(createPhotoDesctiptions);
 
 miniContainer.appendChild(photoFragment);
+
 export {miniContainer};
 
-//Полноразмер
+// Полноразмер
 const fullModal = document.querySelector('.big-picture');
 const escButton = document.querySelector('.cancel');
 const socialComments = document.querySelector('.social__comment-count');
