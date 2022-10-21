@@ -20,4 +20,5 @@ createPhotoDesctiptions.forEach((item) => {
 
 miniContainer.appendChild(photoFragment);
 
+
 export {miniContainer};
