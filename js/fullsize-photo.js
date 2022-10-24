@@ -1,7 +1,8 @@
 import {createPhotoDesctiptions} from './data.js';
-
+import { miniContainer } from './small-photo.js';
+import {isEscapeKey} from './util.js';
 const fullModal = document.querySelector('.big-picture');
-const escButton = document.querySelector('.cancel');
+const escButton = fullModal.querySelector('.cancel');
 const socialComments = document.querySelector('.social__comment-count');
 const commentsLoad = document.querySelector('.comments-loader');
 const body = document.querySelector('body');
@@ -15,7 +16,7 @@ const fullsizedPic = function (pic) {
 
     pic[i].addEventListener('click', (evt) => {
       evt.preventDefault();
-      fullModal.classList.remove('hidden');
+      openModal();
       const bigPicture = document.querySelector('.big-picture__img');
       const urlBigPic = bigPicture.querySelector('img');
       const fullPic = pic[i].querySelector('img').src;
@@ -46,6 +47,9 @@ const fullsizedPic = function (pic) {
         commentText.textContent = createPhotoDesctiptions[i].comments[j].message;
         photoComment.appendChild(commentText);
       }
+      escButton.addEventListener('click', () => {
+        closeModal();
+      });
     });
 
   }
@@ -53,17 +57,32 @@ const fullsizedPic = function (pic) {
 
 fullsizedPic(pictures);
 
-//при нажатии крестика не срабатывает закрытие, при escape работает. что не так не понимаю
-escButton.addEventListener('click', () => {
-  fullModal.classList.add('hidden');
-});
-
-document.addEventListener('keydown', (evt) => {
-  if (evt.keyCode === 27) {
-    fullModal.classList.add('hidden');
+const onModalOnEsc = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeModal();
   }
-});
+};
+
+function closeModal () {
+  fullModal.classList.add('hidden');
+  document.removeEventListener('keydown', onModalOnEsc);
+}
+
+function openModal () {
+  fullModal.classList.remove('hidden');
+  document.addEventListener('keydown', onModalOnEsc);
+}
 
 socialComments.classList.add('hidden');
 commentsLoad.classList.add('hidden');
 
+//Попытка сделать один обработчик
+// function onPictureChange (evt) {
+//   if (evt.target.matches('.picture')) {
+//     evt.preventDefault();
+//     openModal();
+//   }
+// }
+
+// miniContainer.addEventListener('click', onPictureChange);
