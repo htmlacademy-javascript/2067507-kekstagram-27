@@ -6,56 +6,31 @@ const escButton = fullModal.querySelector('.cancel');
 const socialComments = document.querySelector('.social__comment-count');
 const commentsLoad = document.querySelector('.comments-loader');
 const body = document.querySelector('body');
-const pictures = document.querySelectorAll('.picture');
+const photoDescription = document.querySelector('.social__caption');
+const urlBigPic = document.querySelector('.big-picture__img img');
+const likesCount = document.querySelector('.likes-count');
+const commentsCount = document.querySelector('.comments-count');
+const photoComments = document.querySelector('.social__comments');
+const socialComment = document.querySelector('.social__comment');
 
-const fullsizedPic = function (pic) {
-  for (let i = 0; i < pic.length; i++) {
-    const photoDescription = document.querySelector('.social__caption');
-    photoDescription.textContent = createPhotoDesctiptions[i].description;
+const generateFullSize = function (photoObject) {
+  photoDescription.textContent = photoObject.description;
+  urlBigPic.src = photoObject.url;
+  likesCount.textContent = String(photoObject.likes);
+  commentsCount.textContent = String(photoObject.comments.length);
 
+  photoComments.innerHTML = '';
 
-    pic[i].addEventListener('click', (evt) => {
-      evt.preventDefault();
-      openModal();
-      const bigPicture = document.querySelector('.big-picture__img');
-      const urlBigPic = bigPicture.querySelector('img');
-      const fullPic = pic[i].querySelector('img').src;
-      urlBigPic.src = fullPic;
-      const likesCount = document.querySelector('.likes-count');
-      likesCount.textContent = pic[i].querySelector('.picture__likes').textContent;
-      const commentsCount = document.querySelector('.comments-count');
-      commentsCount.textContent = pic[i].querySelector('.picture__comments').textContent;
-      body.classList.add('modal-open');
-      const photoComments = document.querySelector('.social__comments');
-      while (photoComments.firstChild) {
-        photoComments.removeChild(photoComments.lastChild);
-      }
-      for (let j = 0; j < createPhotoDesctiptions[i].comments.length; j++) {
-        const photoComment = document.createElement('li');
-        photoComment.classList.add('social__comment');
-        photoComments.appendChild(photoComment);
-        const commentAvatar = document.createElement('img');
-        commentAvatar.classList.add('social__picture');
-        commentAvatar.src = createPhotoDesctiptions[i].comments[j].avatar;
-        commentAvatar.alt = createPhotoDesctiptions[i].comments[j].name;
-        //Эти значения - 35 даны в примере, может правильно их куда-то вынести? чтобы потом легко заменить было
-        commentAvatar.width = '35';
-        commentAvatar.height = '35';
-        photoComment.appendChild(commentAvatar);
-        const commentText = document.createElement('p');
-        commentText.classList.add('social__text');
-        commentText.textContent = createPhotoDesctiptions[i].comments[j].message;
-        photoComment.appendChild(commentText);
-      }
-      escButton.addEventListener('click', () => {
-        closeModal();
-      });
-    });
+  photoObject.comments.forEach(((item) => {
+    const socialCommentClone = socialComment.cloneNode(true);
+    const img = socialCommentClone.querySelector('img');
+    img.src = item.avatar;
+    img.alt = item.name;
+    socialCommentClone.querySelector('p').textContent = item.message;
 
-  }
+    photoComments.appendChild(socialCommentClone);
+  }));
 };
-
-fullsizedPic(pictures);
 
 const onModalOnEsc = (evt) => {
   if (isEscapeKey(evt)) {
@@ -64,25 +39,35 @@ const onModalOnEsc = (evt) => {
   }
 };
 
+const onModalOnButton = (evt) => {
+  evt.preventDefault();
+  closeModal();
+};
+
 function closeModal () {
+  body.classList.remove('modal-open');
   fullModal.classList.add('hidden');
   document.removeEventListener('keydown', onModalOnEsc);
+  escButton.removeEventListener('click', onModalOnButton);
 }
 
 function openModal () {
+  body.classList.add('modal-open');
   fullModal.classList.remove('hidden');
   document.addEventListener('keydown', onModalOnEsc);
+  escButton.addEventListener('click', onModalOnButton);
 }
 
 socialComments.classList.add('hidden');
 commentsLoad.classList.add('hidden');
 
-//Попытка сделать один обработчик
-// function onPictureChange (evt) {
-//   if (evt.target.matches('.picture')) {
-//     evt.preventDefault();
-//     openModal();
-//   }
-// }
+miniContainer.addEventListener('click', (evt) => {
+  evt.preventDefault();
 
-// miniContainer.addEventListener('click', onPictureChange);
+  const currentPicture = evt.target.closest('.picture');
+
+  const currentObject = createPhotoDesctiptions.find((item) => item.id === Number(currentPicture.dataset.id));
+
+  openModal();
+  generateFullSize(currentObject);
+});
