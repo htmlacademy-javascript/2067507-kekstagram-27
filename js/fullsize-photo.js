@@ -62,12 +62,16 @@ socialComments.classList.add('hidden');
 commentsLoad.classList.add('hidden');
 
 miniContainer.addEventListener('click', (evt) => {
-  evt.preventDefault();
+  // evt.preventDefault();
 
   const currentPicture = evt.target.closest('.picture');
+  if (currentPicture) {
+    const currentObject = createPhotoDesctiptions.find((item) => item.id === Number(currentPicture.dataset.id));
 
-  const currentObject = createPhotoDesctiptions.find((item) => item.id === Number(currentPicture.dataset.id));
 
-  openModal();
-  generateFullSize(currentObject);
+    openModal();
+    generateFullSize(currentObject);
+  }
 });
+
+export {openModal, closeModal};
