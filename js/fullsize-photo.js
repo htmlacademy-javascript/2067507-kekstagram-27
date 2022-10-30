@@ -3,8 +3,8 @@ import { miniContainer } from './small-photo.js';
 import {isEscapeKey} from './util.js';
 const fullModal = document.querySelector('.big-picture');
 const escButton = fullModal.querySelector('.cancel');
-const socialComments = document.querySelector('.social__comment-count');
-const commentsLoad = document.querySelector('.comments-loader');
+// const socialComments = document.querySelector('.social__comment-count');
+// const commentsLoad = document.querySelector('.comments-loader');
 const body = document.querySelector('body');
 const photoDescription = document.querySelector('.social__caption');
 const urlBigPic = document.querySelector('.big-picture__img img');
@@ -12,6 +12,7 @@ const likesCount = document.querySelector('.likes-count');
 const commentsCount = document.querySelector('.comments-count');
 const photoComments = document.querySelector('.social__comments');
 const socialComment = document.querySelector('.social__comment');
+const loadButton = document.querySelector('.social__comments-loader');
 
 const generateFullSize = function (photoObject) {
   photoDescription.textContent = photoObject.description;
@@ -58,8 +59,6 @@ function openModal () {
   escButton.addEventListener('click', onModalOnButton);
 }
 
-socialComments.classList.add('hidden');
-commentsLoad.classList.add('hidden');
 
 miniContainer.addEventListener('click', (evt) => {
   // evt.preventDefault();
@@ -71,7 +70,35 @@ miniContainer.addEventListener('click', (evt) => {
 
     openModal();
     generateFullSize(currentObject);
+
+    const socialCommentsAll = document.querySelectorAll('.social__comment');
+    console.log(socialCommentsAll.length);
+    let loadCount = 0;
+    const stepCount = 5;
+
+    //onchange
+
+    for (let i = stepCount; i < socialCommentsAll.length; i++) {
+      // console.log(socialCommentsAll[i]);
+      socialCommentsAll[i].classList.add('hidden');
+    }
+
+    loadButton.addEventListener('click', () => {
+      loadCount += stepCount;
+      console.log(loadCount);
+      if (loadCount < socialCommentsAll.length) {
+        for (let i = loadCount; i <= socialCommentsAll; i++) {
+          socialCommentsAll[i].classList.remove('hidden');
+        }
+      }
+
+
+      if (loadCount >= socialCommentsAll.length) {
+        loadButton.classList.add('hidden');
+      }
+    });
   }
 });
+
 
 export {openModal, closeModal};
