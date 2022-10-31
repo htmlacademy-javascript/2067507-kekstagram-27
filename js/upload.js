@@ -4,16 +4,16 @@ const photoEditorModal = document.querySelector('.img-upload__overlay');
 const escButton = document.querySelector('.img-upload__cancel');
 const body = document.querySelector('body');
 
+
 inputUpload.addEventListener('change', () => {
   openEditor();
 });
 
 const onModalOnEsc = (evt) => {
-  if (isEscapeKey(evt) && document.activeElement.tagName.toLowerCase() !== 'input') {
+  if (isEscapeKey(evt) && document.activeElement.type !== 'text' && document.activeElement.type !== 'textarea') {
     evt.preventDefault();
     closeEditor();
   }
-
 };
 
 const onModalOnButton = (evt) => {
