@@ -4,19 +4,16 @@ const photoEditorModal = document.querySelector('.img-upload__overlay');
 const escButton = document.querySelector('.img-upload__cancel');
 const body = document.querySelector('body');
 
+
 inputUpload.addEventListener('change', () => {
   openEditor();
 });
 
 const onModalOnEsc = (evt) => {
-  if (isEscapeKey(evt) && document.activeElement.tagName.toLowerCase() !== 'input') {
-    //как пример я попробоавала сделать такую реализацию, и теперь на инпутах действиткельно
-    //не закрывается модалка, но если ничего не в фокусе, те я открыла картинку и сразу
-    //нажала esc то оно не сработает.
+  if (isEscapeKey(evt) && document.activeElement.type !== 'text' && document.activeElement.type !== 'textarea') {
     evt.preventDefault();
     closeEditor();
   }
-
 };
 
 const onModalOnButton = (evt) => {
