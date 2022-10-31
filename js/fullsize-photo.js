@@ -83,21 +83,29 @@ miniContainer.addEventListener('click', (evt) => {
       socialCommentsAll[i].classList.add('hidden');
     }
 
+    // let commentsLoaded = 5;
+
     loadButton.addEventListener('click', () => {
+
       loadCount += stepCount;
       // console.log(loadCount);
       if (loadCount < socialCommentsAll.length) {
-        for (let i = loadCount; i <= loadCount + stepCount; i++) {
+        for (let i = loadCount; i < loadCount + stepCount; i++) {
           if (socialCommentsAll[i]) {
+            // commentsLoaded += 1;
+            // console.log(commentsLoaded);
             socialCommentsAll[i].classList.remove('hidden');
+
           }
+
         }
       }
 
-
-      if (loadCount >= socialCommentsAll.length) {
-        loadButton.classList.add('hidden');
-      }
+      // fullModal.addEventListener('change', () => {
+      //   if (loadCount >= socialCommentsAll.length) {
+      //     loadButton.classList.add('hidden');
+      //   }
+      // });
     });
   }
 });
