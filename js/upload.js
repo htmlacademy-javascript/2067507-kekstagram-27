@@ -8,9 +8,9 @@ const body = document.querySelector('body');
 inputUpload.addEventListener('change', () => {
   openEditor();
 });
-//не работает
+
 const onModalOnEsc = (evt) => {
-  if (isEscapeKey(evt) && (document.activeElement.type !== 'text' || document.activeElement.type !== 'textarea')) {
+  if (isEscapeKey(evt) && document.activeElement.type !== 'text' && document.activeElement.type !== 'textarea') {
     evt.preventDefault();
     closeEditor();
   }

@@ -72,7 +72,7 @@ miniContainer.addEventListener('click', (evt) => {
     generateFullSize(currentObject);
 
     const socialCommentsAll = document.querySelectorAll('.social__comment');
-    console.log(socialCommentsAll.length);
+    // console.log(socialCommentsAll.length);
     let loadCount = 0;
     const stepCount = 5;
 
@@ -85,10 +85,12 @@ miniContainer.addEventListener('click', (evt) => {
 
     loadButton.addEventListener('click', () => {
       loadCount += stepCount;
-      console.log(loadCount);
+      // console.log(loadCount);
       if (loadCount < socialCommentsAll.length) {
-        for (let i = loadCount; i <= socialCommentsAll; i++) {
-          socialCommentsAll[i].classList.remove('hidden');
+        for (let i = loadCount; i <= loadCount + stepCount; i++) {
+          if (socialCommentsAll[i]) {
+            socialCommentsAll[i].classList.remove('hidden');
+          }
         }
       }
 

@@ -1,4 +1,4 @@
-// import { checkStringLength } from "./util";
+import { checkStringLength } from './util.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const hashtagInput = uploadForm.querySelector('.text__hashtags');
@@ -13,29 +13,31 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'error-text',
 }
 );
-//не очень поняла как правильно использовать здесь функцию написанную раньше
+
 function validateTextarea(value) {
-  return value.length <= TEXTAREA_MAX;
+  return checkStringLength(value, TEXTAREA_MAX);
 }
 
-function hasDuplicates() {
+function prepareInputValue () {
   const hashtags = hashtagInput.value;
   const hashtagArray = hashtags.trim().split(' ');
   const copyHashtagArray = hashtagArray.map((element) => element.toLowerCase());
+
+  return { copyHashtagArray, hashtagArray };
+}
+
+function hasDuplicates() {
+  const { copyHashtagArray, hashtagArray} = prepareInputValue();
   return new Set(copyHashtagArray).size === hashtagArray.length;
 }
 
 function hasValidCount() {
-  const hashtags = hashtagInput.value;
-  const hashtagArray = hashtags.trim().split(' ');
-  const copyHashtagArray = hashtagArray.map((element) => element.toLowerCase());
+  const { copyHashtagArray} = prepareInputValue();
   return copyHashtagArray.length <= MAXHASH;
 }
 
 function isValidHash () {
-  const hashtags = hashtagInput.value;
-  const hashtagArray = hashtags.trim().split(' ');
-  const copyHashtagArray = hashtagArray.map((element) => element.toLowerCase());
+  const { copyHashtagArray} = prepareInputValue();
   return copyHashtagArray.every((item) => HASTAG.test(item));
 }
 
