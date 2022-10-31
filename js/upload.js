@@ -10,9 +10,6 @@ inputUpload.addEventListener('change', () => {
 
 const onModalOnEsc = (evt) => {
   if (isEscapeKey(evt) && document.activeElement.tagName.toLowerCase() !== 'input') {
-    //как пример я попробоавала сделать такую реализацию, и теперь на инпутах действиткельно
-    //не закрывается модалка, но если ничего не в фокусе, те я открыла картинку и сразу
-    //нажала esc то оно не сработает.
     evt.preventDefault();
     closeEditor();
   }
