@@ -19,7 +19,6 @@ createPhotoDesctiptions.forEach((item) => {
   photoFragment.appendChild(photoElement);
 });
 
-
 miniContainer.appendChild(photoFragment);
 
 
