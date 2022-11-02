@@ -1,9 +1,10 @@
 import {isEscapeKey} from './util.js';
+import { resetScale } from './scale.js';
+
 const inputUpload = document.querySelector('#upload-file');
 const photoEditorModal = document.querySelector('.img-upload__overlay');
 const escButton = document.querySelector('.img-upload__cancel');
 const body = document.querySelector('body');
-
 
 inputUpload.addEventListener('change', () => {
   openEditor();
@@ -24,7 +25,7 @@ const onModalOnButton = (evt) => {
 function openEditor () {
   photoEditorModal.classList.remove('hidden');
   body.classList.add('modal-open');
-
+  resetScale();
 
   document.addEventListener('keydown', onModalOnEsc);
   escButton.addEventListener('click', onModalOnButton);

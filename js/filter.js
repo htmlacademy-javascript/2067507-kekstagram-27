@@ -1,59 +1,119 @@
 const filterRange = document.querySelector('.effect-level__slider');
-const effectsList = document.querySelector('.effects__list');
+const filterInput = document.querySelector('.effect-level__value');
+// const effectsList = document.querySelector('.effects__list');
 const radiosAll = document.querySelectorAll('.effects__radio');
-const itemsLi = document.querySelectorAll('.effects__item');
+// const itemsLi = document.querySelectorAll('.effects__item');
+// const checkbox = document.querySelector('#effect-chrome');
+const filterPreview = document.querySelector('.img-upload__preview');
+const effectsClass = 'effects__preview--';
 
-// const EFFECTS = ['effects__preview--none', 'effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat'];
+const EFFECTS = [
+  {
+    name: 'none',
+    min: 0,
+    max: 100,
+    step: 1,
+  },
+
+  {
+    name: 'chrome',
+    filter: 'grayscale',
+    min: 0,
+    max: 1,
+    step: 0.1,
+    unit: '',
+  },
+
+  {
+    name: 'sepia',
+    filter: 'sepia',
+    min: 0,
+    max: 1,
+    step: 0.1,
+    unit: '',
+  },
+
+  {
+    name: 'marvin',
+    filter: 'invert',
+    min: 0,
+    max: 100,
+    step: 1,
+    unit: '%',
+  },
+
+  {
+    name: 'phobos',
+    filter: 'blur',
+    min: 0,
+    max: 3,
+    step: 0.1,
+    unit: 'px',
+  },
+
+  {
+    name: 'heat',
+    filter: 'brightness',
+    min: 1,
+    max: 3,
+    step: 0.1,
+    unit: '',
+  },
+];
+
+const noneEffect = EFFECTS[0];
+let chosenEffect = noneEffect;
+
+filterInput.value = 0;
 
 noUiSlider.create(filterRange, {
   range: {
-    min: 0,
-    max: 100,
+    min: noneEffect.min,
+    max: noneEffect.max,
   },
-  start: 0,
-  step: 1,
+  start: noneEffect.max,
+  step: noneEffect.step,
   connect: 'lower',
 });
 
-filterRange.noUiSlider.on('update', (...rest) => {
-  // console.log(rest);
-});
+const updateSlider = () => {
+  filterRange.noUiSlider.updateOptions({
+    range: {
+      min: chosenEffect.min,
+      max: chosenEffect.max,
+    },
+    step: chosenEffect.step,
+    start: chosenEffect.max,
+  });
+};
 
-
-effectsList.addEventListener('change', (evt) => {
-  // console.log(evt.target.closest('.effects__list'))
-
-})
-
-// console.log(document.querySelector('#effect-none').checked);
+function isDefault () {
+  if (chosenEffect === noneEffect) {
+    filterRange.classList.add('hidden');
+    filterPreview.style.filter = 'none';
+  } else {
+    filterRange.classList.remove('hidden');
+  }
+}
 
 
 radiosAll.forEach((radio) => {
-  // console.log(radio.id);
+  radio.addEventListener('change', (event) => {
+    if (event.currentTarget.checked) {
+      filterPreview.className = 'img-upload__preview';
+      const effectsID = event.currentTarget.id.slice(7);
+      filterPreview.classList.add(`${effectsClass}${effectsID}`);
+      chosenEffect = EFFECTS.find((effect) => effect.name === effectsID);
+      updateSlider();
+      // console.log(updateSlider())
+    }
+  });
+});
+
+
+filterRange.noUiSlider.on('update', () => {
+  filterInput.value = filterRange.noUiSlider.get();
+  filterPreview.style.filter = `${chosenEffect.filter}(${filterInput.value}${chosenEffect.unit})`;
+  isDefault();
 }
 );
-
-
-
-// switch (radio.id) {
-//   case 'effects-none':
-//     console.log(1);
-//     break;
-//   case 'effects-chrome':
-//     console.log(2);
-//     break;
-//   case 'effects-sepia':
-//     console.log(3);
-//     break;
-//   case 'effects-marvin':
-//     console.log(4);
-//     break;
-//   case 'effects-phobos':
-//     console.log(5);
-//     break;
-//   case 'effects-heat':
-//     console.log(6);
-//     break;
-// }
-
-
