@@ -1,0 +1,119 @@
+const filterRange = document.querySelector('.effect-level__slider');
+const filterInput = document.querySelector('.effect-level__value');
+// const effectsList = document.querySelector('.effects__list');
+const radiosAll = document.querySelectorAll('.effects__radio');
+// const itemsLi = document.querySelectorAll('.effects__item');
+// const checkbox = document.querySelector('#effect-chrome');
+const filterPreview = document.querySelector('.img-upload__preview');
+const effectsClass = 'effects__preview--';
+
+const EFFECTS = [
+  {
+    name: 'none',
+    min: 0,
+    max: 100,
+    step: 1,
+  },
+
+  {
+    name: 'chrome',
+    filter: 'grayscale',
+    min: 0,
+    max: 1,
+    step: 0.1,
+    unit: '',
+  },
+
+  {
+    name: 'sepia',
+    filter: 'sepia',
+    min: 0,
+    max: 1,
+    step: 0.1,
+    unit: '',
+  },
+
+  {
+    name: 'marvin',
+    filter: 'invert',
+    min: 0,
+    max: 100,
+    step: 1,
+    unit: '%',
+  },
+
+  {
+    name: 'phobos',
+    filter: 'blur',
+    min: 0,
+    max: 3,
+    step: 0.1,
+    unit: 'px',
+  },
+
+  {
+    name: 'heat',
+    filter: 'brightness',
+    min: 1,
+    max: 3,
+    step: 0.1,
+    unit: '',
+  },
+];
+
+const noneEffect = EFFECTS[0];
+let chosenEffect = noneEffect;
+
+filterInput.value = 0;
+
+noUiSlider.create(filterRange, {
+  range: {
+    min: noneEffect.min,
+    max: noneEffect.max,
+  },
+  start: noneEffect.max,
+  step: noneEffect.step,
+  connect: 'lower',
+});
+
+const updateSlider = () => {
+  filterRange.noUiSlider.updateOptions({
+    range: {
+      min: chosenEffect.min,
+      max: chosenEffect.max,
+    },
+    step: chosenEffect.step,
+    start: chosenEffect.max,
+  });
+};
+
+function isDefault () {
+  if (chosenEffect === noneEffect) {
+    filterRange.classList.add('hidden');
+    filterPreview.style.filter = 'none';
+  } else {
+    filterRange.classList.remove('hidden');
+  }
+}
+
+
+radiosAll.forEach((radio) => {
+  radio.addEventListener('change', (event) => {
+    if (event.currentTarget.checked) {
+      filterPreview.className = 'img-upload__preview';
+      const effectsID = event.currentTarget.id.slice(7);
+      filterPreview.classList.add(`${effectsClass}${effectsID}`);
+      chosenEffect = EFFECTS.find((effect) => effect.name === effectsID);
+      updateSlider();
+      // console.log(updateSlider())
+    }
+  });
+});
+
+
+filterRange.noUiSlider.on('update', () => {
+  filterInput.value = filterRange.noUiSlider.get();
+  filterPreview.style.filter = `${chosenEffect.filter}(${filterInput.value}${chosenEffect.unit})`;
+  isDefault();
+}
+);
