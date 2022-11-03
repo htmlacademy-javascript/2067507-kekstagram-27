@@ -1,15 +1,7 @@
-const filterRange = document.querySelector('.effect-level__slider');
-const filterInput = document.querySelector('.effect-level__value');
-// const effectsList = document.querySelector('.effects__list');
-const radiosAll = document.querySelectorAll('.effects__radio');
-// const itemsLi = document.querySelectorAll('.effects__item');
-// const checkbox = document.querySelector('#effect-chrome');
-const filterPreview = document.querySelector('.img-upload__preview');
-const effectsClass = 'effects__preview--';
-
 const EFFECTS = [
   {
     name: 'none',
+    filter: 'none',
     min: 0,
     max: 100,
     step: 1,
@@ -61,6 +53,13 @@ const EFFECTS = [
   },
 ];
 
+const filterRange = document.querySelector('.effect-level__slider');
+const filterInput = document.querySelector('.effect-level__value');
+
+const formUpload = document.querySelector('.img-upload__form');
+const filterPreview = document.querySelector('.img-upload__preview img');
+const effectsClass = 'effects__preview--';
+
 const noneEffect = EFFECTS[0];
 let chosenEffect = noneEffect;
 
@@ -77,6 +76,7 @@ noUiSlider.create(filterRange, {
 });
 
 const updateSlider = () => {
+  isDefault();
   filterRange.noUiSlider.updateOptions({
     range: {
       min: chosenEffect.min,
@@ -96,24 +96,26 @@ function isDefault () {
   }
 }
 
+function resetEffects () {
+  chosenEffect = noneEffect;
+  updateSlider();
+}
 
-radiosAll.forEach((radio) => {
-  radio.addEventListener('change', (event) => {
-    if (event.currentTarget.checked) {
-      filterPreview.className = 'img-upload__preview';
-      const effectsID = event.currentTarget.id.slice(7);
-      filterPreview.classList.add(`${effectsClass}${effectsID}`);
-      chosenEffect = EFFECTS.find((effect) => effect.name === effectsID);
-      updateSlider();
-      // console.log(updateSlider())
-    }
-  });
+formUpload.addEventListener('change', (event) => {
+  if (event.target.classList.contains('effects__radio')) {
+    filterPreview.className = 'img-upload__preview';
+    const effectsID = event.target.value;
+    filterPreview.classList.add(`${effectsClass}${effectsID}`);
+    chosenEffect = EFFECTS.find((effect) => effect.name === effectsID);
+    updateSlider();
+  }
 });
 
 
 filterRange.noUiSlider.on('update', () => {
   filterInput.value = filterRange.noUiSlider.get();
   filterPreview.style.filter = `${chosenEffect.filter}(${filterInput.value}${chosenEffect.unit})`;
-  isDefault();
 }
 );
+
+export {resetEffects};
