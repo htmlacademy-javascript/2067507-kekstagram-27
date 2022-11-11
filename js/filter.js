@@ -111,7 +111,6 @@ formUpload.addEventListener('change', (event) => {
   }
 });
 
-
 filterRange.noUiSlider.on('update', () => {
   filterInput.value = filterRange.noUiSlider.get();
   filterPreview.style.filter = `${chosenEffect.filter}(${filterInput.value}${chosenEffect.unit})`;

@@ -7,6 +7,10 @@ const photoEditorModal = document.querySelector('.img-upload__overlay');
 const escButton = document.querySelector('.img-upload__cancel');
 const body = document.querySelector('body');
 
+const radios = document.querySelectorAll('.effects__radio');
+const defaultChecked = radios[0];
+
+
 inputUpload.addEventListener('change', () => {
   openEditor();
 });
@@ -37,6 +41,7 @@ function closeEditor () {
   photoEditorModal.classList.add('hidden');
   body.classList.remove('modal-open');
   inputUpload.value = '';
+  defaultChecked.checked = 'true';
 
   document.removeEventListener('keydown', onModalOnEsc);
   escButton.removeEventListener('click', onModalOnButton);
