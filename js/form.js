@@ -2,7 +2,7 @@ import { checkStringLength } from './util.js';
 
 const HASTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_HASH_COUNT = 5;
-const TEXTAREA_MAX__LENGHT = 140;
+const TEXTAREA_MAX_LENGHT = 140;
 
 const uploadForm = document.querySelector('.img-upload__form');
 const hashtagInput = uploadForm.querySelector('.text__hashtags');
@@ -16,7 +16,7 @@ const pristine = new Pristine(uploadForm, {
 );
 
 function validateTextarea(value) {
-  return checkStringLength(value, TEXTAREA_MAX__LENGHT);
+  return checkStringLength(value, TEXTAREA_MAX_LENGHT);
 }
 
 function prepareInputValue () {
@@ -45,7 +45,7 @@ function isValidHash () {
 pristine.addValidator(
   uploadForm.querySelector('.text__description'),
   validateTextarea,
-  `Длина сообщения не должная быть больше ${TEXTAREA_MAX__LENGHT}`);
+  `Длина сообщения не должная быть больше ${TEXTAREA_MAX_LENGHT}`);
 
 pristine.addValidator(hashtagInput, hasDuplicates, 'Хештеги не должны повторяться');
 pristine.addValidator(hashtagInput, hasValidCount, 'Максимальное кол-во 5 хештегов');

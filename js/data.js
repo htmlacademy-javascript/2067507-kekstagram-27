@@ -43,7 +43,7 @@ function getRandom(array) {
 const createComments = () => {
 
   const comments = [];
-  for (let i = 1; i < getRandomPositiveInteger(1, 5); i++) {
+  for (let i = 1; i < getRandomPositiveInteger(5, 20); i++) {
     comments.push({
       avatar: `img/avatar-${getRandomPositiveInteger(1, 6)}.svg`,
       message: getRandom(MESSAGES),
