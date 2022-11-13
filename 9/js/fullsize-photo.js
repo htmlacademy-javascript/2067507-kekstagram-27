@@ -78,6 +78,7 @@ function closeModal () {
   escButton.removeEventListener('click', onModalOnButton);
   commentsArr = [];
   renderedComments = 0;
+  loadButton.removeEventListener('click', addComments);
 }
 
 function openModal () {
@@ -88,7 +89,6 @@ function openModal () {
   loadButton.addEventListener('click', addComments);
 }
 
-
 miniContainer.addEventListener('click', (evt) => {
   const currentPicture = evt.target.closest('.picture');
   if (currentPicture) {
@@ -98,6 +98,5 @@ miniContainer.addEventListener('click', (evt) => {
     generateFullSize(currentObject);
   }
 });
-
 
 export {openModal, closeModal};
