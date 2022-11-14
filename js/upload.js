@@ -7,6 +7,10 @@ const photoEditorModal = document.querySelector('.img-upload__overlay');
 const escButton = document.querySelector('.img-upload__cancel');
 const body = document.querySelector('body');
 
+const hashtagInput = document.querySelector('.text__hashtags');
+const textFieldInput = document.querySelector('.text__description');
+// console.log(textFieldInput)
+
 const radios = document.querySelectorAll('.effects__radio');
 const defaultChecked = radios[0];
 
@@ -42,9 +46,12 @@ function closeEditor () {
   body.classList.remove('modal-open');
   inputUpload.value = '';
   defaultChecked.checked = 'true';
+  hashtagInput.value = '';
+  textFieldInput.value = '';
 
   document.removeEventListener('keydown', onModalOnEsc);
   escButton.removeEventListener('click', onModalOnButton);
 }
 
 
+export {openEditor, closeEditor};
