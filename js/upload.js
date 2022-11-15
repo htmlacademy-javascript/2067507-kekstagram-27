@@ -23,35 +23,42 @@ const onModalOnEsc = (evt) => {
   if (isEscapeKey(evt) && document.activeElement.type !== 'text' && document.activeElement.type !== 'textarea') {
     evt.preventDefault();
     closeEditor();
+    resetEditor();
   }
 };
 
 const onModalOnButton = (evt) => {
   evt.preventDefault();
   closeEditor();
+  resetEditor();
 };
 
-function openEditor () {
+function openEditorOnErr () {
   photoEditorModal.classList.remove('hidden');
   body.classList.add('modal-open');
-  resetScale();
-  resetEffects();
-
   document.addEventListener('keydown', onModalOnEsc);
   escButton.addEventListener('click', onModalOnButton);
+}
+
+function openEditor () {
+  resetScale();
+  resetEffects();
+  openEditorOnErr();
 }
 
 function closeEditor () {
   photoEditorModal.classList.add('hidden');
   body.classList.remove('modal-open');
-  inputUpload.value = '';
-  defaultChecked.checked = 'true';
-  hashtagInput.value = '';
-  textFieldInput.value = '';
 
   document.removeEventListener('keydown', onModalOnEsc);
   escButton.removeEventListener('click', onModalOnButton);
 }
 
+function resetEditor () {
+  inputUpload.value = '';
+  defaultChecked.checked = 'true';
+  hashtagInput.value = '';
+  textFieldInput.value = '';
+}
 
-export {openEditor, closeEditor};
+export {openEditor, closeEditor, resetEditor, openEditorOnErr};

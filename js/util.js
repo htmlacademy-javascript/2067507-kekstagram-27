@@ -1,4 +1,4 @@
-import { closeEditor } from './upload.js';
+import { closeEditor, resetEditor, openEditorOnErr } from './upload.js';
 
 //Функция для вычисления рандомного числа
 function getRandomPositiveInteger(a, b) {
@@ -32,35 +32,64 @@ const body = document.querySelector('body');
 
 const okTemplate = document.querySelector('#success').content;
 const okBlock = okTemplate.querySelector('.success');
-// console.log(okTemplate)
+const photoElementErr = errBlock.cloneNode(true);
+const photoElementOk = okBlock.cloneNode(true);
 
-// console.log(errorButtonOk)
+
+const onMessageOnEsc = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    if(document.querySelector('.success')) {
+      hideMessageOk();
+    }
+    else {
+      hideMessageErr();
+    }
+  }
+};
+
+const onWindowClick = (evt) => {
+  if (evt.target === document.querySelector('.success')) {
+    hideMessageOk();
+  } else if (evt.target === document.querySelector('.error')) {
+    hideMessageErr();
+  }
+};
 
 const showErrUpload = () => {
-  //нужен ли каждому свой фрагмент?
   const photoFragment = document.createDocumentFragment();
-  const photoElement = errBlock.cloneNode(true);
-  photoFragment.append(photoElement);
+  photoFragment.append(photoElementErr);
   body.append(photoFragment);
-  const errorButtonOk = photoElement.querySelector('.error__button');
-  //как удалить обработчик, если вынести photoElement не получится
-  errorButtonOk.addEventListener('click', () => {
-    photoElement.classList.add('hidden');
-  });
+  const errorButtonOk = photoElementErr.querySelector('.error__button');
+  closeEditor();
+  body.style.overflow = 'hidden';
+  errorButtonOk.addEventListener('click', hideMessageErr);
+  document.addEventListener('keydown', onMessageOnEsc);
+  body.addEventListener('click', onWindowClick);
 };
+//Блоки с ошибкой удаляются из дум разметки при нажатии клика, по логике они сами должны удалиться?
+function hideMessageErr () {
+  openEditorOnErr();
+  photoElementErr.remove();
+}
+
+function hideMessageOk () {
+  photoElementOk.remove();
+}
 
 const showOkUpload = () => {
   const photoFragment = document.createDocumentFragment();
-  const photoElement = okBlock.cloneNode(true);
-  photoFragment.append(photoElement);
+  photoFragment.append(photoElementOk);
   body.append(photoFragment);
-  const successButtonOk = photoElement.querySelector('.success__button');
-  successButtonOk.addEventListener('click', () => {
-    closeEditor();
-    photoElement.classList.add('hidden');
-  });
+  body.style.overflow = 'hidden';
+  const successButtonOk = photoElementOk.querySelector('.success__button');
+  closeEditor();
+  resetEditor();
+  successButtonOk.addEventListener('click', hideMessageOk);
+  document.addEventListener('keydown', onMessageOnEsc);
+  body.addEventListener('click', onWindowClick);
 };
-//забыла как прикрепить к началу боди
+
 const onErrorGet = () => {
   const div = document.createElement('div');
   div.classList.add('error-loading');
@@ -68,7 +97,6 @@ const onErrorGet = () => {
   body.append(div);
 };
 
-onErrorGet();
 
 export {getRandomPositiveInteger, checkStringLength, isEscapeKey, showErrUpload, showOkUpload, onErrorGet};
 

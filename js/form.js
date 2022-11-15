@@ -65,7 +65,6 @@ const savingPhoto = () => {
 const unSavingPhoto = () => {
   const body = document.querySelector('body');
   const uploadMessage = document.querySelector('.img-upload__message');
-  //в одном случае сделала хидден, в другом ремув. Как лучше
   body.removeChild(uploadMessage);
 };
 
@@ -73,7 +72,6 @@ const setuserFormSubmit = (onSuccess, onError) => {
 
   uploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    // console.log(pristine.validate());
     if (pristine.validate()) {
       savingPhoto();
       const formData = new FormData(evt.target);
@@ -88,18 +86,17 @@ const setuserFormSubmit = (onSuccess, onError) => {
           unSavingPhoto();
           onSuccess();
         } else {
+          unSavingPhoto();
           onError();
         }})
-        //как он понимает что ловить если мы не передали ошибку
         .catch(() => {
+          unSavingPhoto();
           onError();
         });
-      // console.log('Is valid');
     }
   });
 };
 
-// savingPhoto()
 export {setuserFormSubmit, savingPhoto};
 //в тех задании мультипарт форм дата
 //оверфлоу наложить
