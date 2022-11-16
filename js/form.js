@@ -1,11 +1,12 @@
 import { checkStringLength } from './util.js';
-
 const HASTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_HASH_COUNT = 5;
 const TEXTAREA_MAX_LENGHT = 140;
 
 const uploadForm = document.querySelector('.img-upload__form');
 const hashtagInput = uploadForm.querySelector('.text__hashtags');
+const body = document.querySelector('body');
+const savingTemplate = document.querySelector('#messages').content;
 
 
 const pristine = new Pristine(uploadForm, {
@@ -38,8 +39,10 @@ function hasValidCount() {
 }
 
 function isValidHash () {
-  const { copyHashtagArray} = prepareInputValue();
-  return copyHashtagArray.every((item) => HASTAG.test(item));
+  if (hashtagInput.value !== '') {
+    return hashtagInput.value.split(' ').every((hastag) => HASTAG.test(hastag));
+  }
+  return true;
 }
 
 pristine.addValidator(
@@ -51,9 +54,49 @@ pristine.addValidator(hashtagInput, hasDuplicates, 'Хештеги не долж
 pristine.addValidator(hashtagInput, hasValidCount, 'Максимальное кол-во 5 хештегов');
 pristine.addValidator(hashtagInput, isValidHash, 'Хэштег должен начинаться с # и состоять из букв и чисел');
 
-uploadForm.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
-    evt.preventDefault();
-  }
-});
 
+const savingPhoto = () => {
+  const uploadMessage = savingTemplate.querySelector('.img-upload__message');
+  const photoFragment = document.createDocumentFragment();
+  const photoElement = uploadMessage.cloneNode(true);
+  photoFragment.append(photoElement);
+  body.append(photoFragment);
+};
+
+const unSavingPhoto = () => {
+  const uploadMessage = document.querySelector('.img-upload__message');
+  body.removeChild(uploadMessage);
+};
+
+const setUserFormSubmit = (onSuccess, onError) => {
+
+  uploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    if (pristine.validate()) {
+      savingPhoto();
+      const formData = new FormData(evt.target);
+      fetch(
+        'https://27.javascript.pages.academy/kekstagram',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      ).then((response) => {
+        if (response.ok) {
+          unSavingPhoto();
+          onSuccess();
+        } else {
+          unSavingPhoto();
+          onError();
+        }})
+        .catch(() => {
+          unSavingPhoto();
+          onError();
+        });
+    }
+  });
+};
+
+export {setUserFormSubmit, savingPhoto};
+//в тех задании мультипарт форм дата
+//оверфлоу наложить

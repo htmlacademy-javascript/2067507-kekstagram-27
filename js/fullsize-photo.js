@@ -1,4 +1,4 @@
-import {createPhotoDesctiptions} from './data.js';
+// import {createPhotoDesctiptions} from './data.js';
 import { miniContainer } from './small-photo.js';
 import {isEscapeKey} from './util.js';
 
@@ -89,14 +89,16 @@ function openModal () {
   loadButton.addEventListener('click', addComments);
 }
 
-miniContainer.addEventListener('click', (evt) => {
-  const currentPicture = evt.target.closest('.picture');
-  if (currentPicture) {
-    const currentObject = createPhotoDesctiptions.find((item) => item.id === Number(currentPicture.dataset.id));
+function dataComments (data) {
 
-    openModal();
-    generateFullSize(currentObject);
-  }
-});
+  miniContainer.addEventListener('click', (evt) => {
+    const currentPicture = evt.target.closest('.picture');
+    if (currentPicture) {
+      const currentObject = data.find((item) => item.id === Number(currentPicture.dataset.id));
 
-export {openModal, closeModal};
+      openModal();
+      generateFullSize(currentObject);
+    }
+  });
+}
+export {openModal, closeModal, dataComments};
