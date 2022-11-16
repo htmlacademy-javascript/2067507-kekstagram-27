@@ -1,7 +1,6 @@
 import { dataChanged } from './small-photo.js';
 import {dataComments} from './fullsize-photo.js';
-import { setuserFormSubmit } from './form.js';
-// import {closeEditor} from './upload.js';
+import { setUserFormSubmit } from './form.js';
 import {showErrUpload, showOkUpload, onErrorGet} from './util.js';
 
 
@@ -15,4 +14,4 @@ fetch('https://27.javascript.pages.academy/kekstagram/data')
     onErrorGet();
   });
 
-setuserFormSubmit(showOkUpload, showErrUpload);
+setUserFormSubmit(showOkUpload, showErrUpload);

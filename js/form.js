@@ -1,11 +1,12 @@
 import { checkStringLength } from './util.js';
-// import { showErrUpload, showOkUpload } from './util.js';
 const HASTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_HASH_COUNT = 5;
 const TEXTAREA_MAX_LENGHT = 140;
 
 const uploadForm = document.querySelector('.img-upload__form');
 const hashtagInput = uploadForm.querySelector('.text__hashtags');
+const body = document.querySelector('body');
+const savingTemplate = document.querySelector('#messages').content;
 
 
 const pristine = new Pristine(uploadForm, {
@@ -38,23 +39,23 @@ function hasValidCount() {
 }
 
 function isValidHash () {
-  const { copyHashtagArray} = prepareInputValue();
-  return copyHashtagArray.every((item) => HASTAG.test(item));
+  if (hashtagInput.value !== '') {
+    return hashtagInput.value.split(' ').every((hastag) => HASTAG.test(hastag));
+  }
+  return true;
 }
 
 pristine.addValidator(
   uploadForm.querySelector('.text__description'),
   validateTextarea,
   `Длина сообщения не должная быть больше ${TEXTAREA_MAX_LENGHT}`);
-//пристин не проходит проверку с пустыми полями, хотя они не обязательны
+
 pristine.addValidator(hashtagInput, hasDuplicates, 'Хештеги не должны повторяться');
 pristine.addValidator(hashtagInput, hasValidCount, 'Максимальное кол-во 5 хештегов');
 pristine.addValidator(hashtagInput, isValidHash, 'Хэштег должен начинаться с # и состоять из букв и чисел');
 
 
 const savingPhoto = () => {
-  const body = document.querySelector('body');
-  const savingTemplate = document.querySelector('#messages').content;
   const uploadMessage = savingTemplate.querySelector('.img-upload__message');
   const photoFragment = document.createDocumentFragment();
   const photoElement = uploadMessage.cloneNode(true);
@@ -63,12 +64,11 @@ const savingPhoto = () => {
 };
 
 const unSavingPhoto = () => {
-  const body = document.querySelector('body');
   const uploadMessage = document.querySelector('.img-upload__message');
   body.removeChild(uploadMessage);
 };
 
-const setuserFormSubmit = (onSuccess, onError) => {
+const setUserFormSubmit = (onSuccess, onError) => {
 
   uploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -97,6 +97,6 @@ const setuserFormSubmit = (onSuccess, onError) => {
   });
 };
 
-export {setuserFormSubmit, savingPhoto};
+export {setUserFormSubmit, savingPhoto};
 //в тех задании мультипарт форм дата
 //оверфлоу наложить

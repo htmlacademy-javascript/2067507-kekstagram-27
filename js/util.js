@@ -60,20 +60,27 @@ const showErrUpload = () => {
   const photoFragment = document.createDocumentFragment();
   photoFragment.append(photoElementErr);
   body.append(photoFragment);
-  const errorButtonOk = photoElementErr.querySelector('.error__button');
+  const errorButtonErr = photoElementErr.querySelector('.error__button');
   closeEditor();
   body.style.overflow = 'hidden';
-  errorButtonOk.addEventListener('click', hideMessageErr);
+  errorButtonErr.addEventListener('click', hideMessageErr);
   document.addEventListener('keydown', onMessageOnEsc);
   body.addEventListener('click', onWindowClick);
 };
-//Блоки с ошибкой удаляются из дум разметки при нажатии клика, по логике они сами должны удалиться?
+
 function hideMessageErr () {
   openEditorOnErr();
+  const errorButtonErr = photoElementErr.querySelector('.error__button');
+  errorButtonErr.removeEventListener('click', hideMessageErr);
+  document.removeEventListener('keydown', onMessageOnEsc);
   photoElementErr.remove();
 }
 
 function hideMessageOk () {
+  const successButtonOk = photoElementOk.querySelector('.success__button');
+  successButtonOk.removeEventListener('click', hideMessageOk);
+  document.removeEventListener('keydown', onMessageOnEsc);
+  body.removeEventListener('click', onWindowClick);
   photoElementOk.remove();
 }
 
