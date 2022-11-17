@@ -9,7 +9,6 @@ const body = document.querySelector('body');
 
 const hashtagInput = document.querySelector('.text__hashtags');
 const textFieldInput = document.querySelector('.text__description');
-// console.log(textFieldInput)
 
 const radios = document.querySelectorAll('.effects__radio');
 const defaultChecked = radios[0];

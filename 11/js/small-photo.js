@@ -1,11 +1,6 @@
-// import {createPhotoDesctiptions} from './data.js';
-
 const pictureTemp = document.querySelector('#picture').content;
-
 const picture = pictureTemp.querySelector('.picture');
-
 const miniContainer = document.querySelector('.pictures');
-
 
 const dataChanged = (data) => {
   const photoFragment = document.createDocumentFragment();

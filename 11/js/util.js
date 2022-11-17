@@ -104,6 +104,30 @@ const onErrorGet = () => {
   body.append(div);
 };
 
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
 
-export {getRandomPositiveInteger, checkStringLength, isEscapeKey, showErrUpload, showOkUpload, onErrorGet};
+const getRandomPhotos = (array, quantity) => {
+  const newArray = [];
+
+  const createRandomIndex = () => {
+    const index = Math.floor(Math.random() * array.length);
+    if(newArray.includes(array[index])) {
+      return createRandomIndex();
+    }
+    return index;
+  };
+
+  for (let i = 0; i < quantity; i++) {
+    newArray.push(array[createRandomIndex()]);
+  }
+  return newArray;
+};
+
+export {getRandomPositiveInteger, checkStringLength, isEscapeKey, showErrUpload, showOkUpload, onErrorGet, debounce, getRandomPhotos};
 
