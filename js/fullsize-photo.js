@@ -1,4 +1,3 @@
-// import {createPhotoDesctiptions} from './data.js';
 import { miniContainer } from './small-photo.js';
 import {isEscapeKey} from './util.js';
 

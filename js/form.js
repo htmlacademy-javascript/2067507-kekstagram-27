@@ -98,5 +98,3 @@ const setUserFormSubmit = (onSuccess, onError) => {
 };
 
 export {setUserFormSubmit, savingPhoto};
-//в тех задании мультипарт форм дата
-//оверфлоу наложить
