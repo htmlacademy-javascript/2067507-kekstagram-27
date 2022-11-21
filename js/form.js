@@ -61,6 +61,7 @@ const savingPhoto = () => {
   body.append(photoFragment);
 };
 
+
 const unSavingPhoto = () => {
   const uploadMessage = document.querySelector('.img-upload__message');
   body.removeChild(uploadMessage);
