@@ -16,43 +16,41 @@ const pristine = new Pristine(uploadForm, {
 }
 );
 
-function validateTextarea(value) {
-  return checkStringLength(value, TEXTAREA_MAX_LENGHT);
-}
+const validateTextarea = (value) => checkStringLength(value, TEXTAREA_MAX_LENGHT);
 
-function prepareInputValue () {
+const prepareInputValue = () => {
   const hashtags = hashtagInput.value;
   const hashtagArray = hashtags.trim().split(' ');
   const copyHashtagArray = hashtagArray.map((element) => element.toLowerCase());
 
   return { copyHashtagArray, hashtagArray };
-}
+};
 
-function hasDuplicates() {
-  const { copyHashtagArray, hashtagArray} = prepareInputValue();
+const checkDuplicates = () => {
+  const { copyHashtagArray, hashtagArray } = prepareInputValue();
   return new Set(copyHashtagArray).size === hashtagArray.length;
-}
+};
 
-function hasValidCount() {
-  const { copyHashtagArray} = prepareInputValue();
+const checkValidCount = () => {
+  const { copyHashtagArray } = prepareInputValue();
   return copyHashtagArray.length <= MAX_HASH_COUNT;
-}
+};
 
-function isValidHash () {
+const checkValidHash = () => {
   if (hashtagInput.value !== '') {
     return hashtagInput.value.split(' ').every((hastag) => HASTAG.test(hastag));
   }
   return true;
-}
+};
 
 pristine.addValidator(
   uploadForm.querySelector('.text__description'),
   validateTextarea,
   `Длина сообщения не должная быть больше ${TEXTAREA_MAX_LENGHT}`);
 
-pristine.addValidator(hashtagInput, hasDuplicates, 'Хештеги не должны повторяться');
-pristine.addValidator(hashtagInput, hasValidCount, 'Максимальное кол-во 5 хештегов');
-pristine.addValidator(hashtagInput, isValidHash, 'Хэштег должен начинаться с # и состоять из букв и чисел');
+pristine.addValidator(hashtagInput, checkDuplicates, 'Хештеги не должны повторяться');
+pristine.addValidator(hashtagInput, checkValidCount, 'Максимальное кол-во 5 хештегов');
+pristine.addValidator(hashtagInput, checkValidHash, 'Хэштег должен начинаться с # и состоять из букв и чисел');
 
 
 const savingPhoto = () => {
@@ -85,16 +83,20 @@ const setUserFormSubmit = (onSuccess, onError) => {
         if (response.ok) {
           unSavingPhoto();
           onSuccess();
+          body.style.overflow = 'unset';
         } else {
           unSavingPhoto();
           onError();
-        }})
+          body.style.overflow = 'unset';
+        }
+      })
         .catch(() => {
           unSavingPhoto();
           onError();
+          body.style.overflow = 'unset';
         });
     }
   });
 };
 
-export {setUserFormSubmit, savingPhoto};
+export { setUserFormSubmit, savingPhoto, unSavingPhoto };

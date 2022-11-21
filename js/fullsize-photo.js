@@ -1,4 +1,4 @@
-import { miniContainer } from './small-photo.js';
+import { picturesContainer } from './small-photo.js';
 import {isEscapeKey} from './util.js';
 
 const STEP_COUNT = 5;
@@ -18,7 +18,15 @@ const commentsLoaded = document.querySelector('.comments-loaded');
 let renderedComments = 0;
 let commentsArr = [];
 
-const generateComments = function (arrayOfFive) {
+const hideLoadButton = () => {
+  if (renderedComments === commentsArr.length) {
+    loadButton.classList.add('hidden');
+  } else {
+    loadButton.classList.remove('hidden');
+  }
+};
+
+const generateComments = (arrayOfFive) => {
   arrayOfFive.forEach((item) => {
     const socialCommentClone = socialComment.cloneNode(true);
     const img = socialCommentClone.querySelector('img');
@@ -30,10 +38,10 @@ const generateComments = function (arrayOfFive) {
     photoComments.appendChild(socialCommentClone);
   });
   commentsLoaded.textContent = renderedComments;
-  hideLoadBtn();
+  hideLoadButton();
 };
 
-const generateFullSize = function (photoObject) {
+const generateFullSize = (photoObject) => {
   photoDescription.textContent = photoObject.description;
   urlBigPic.src = photoObject.url;
   likesCount.textContent = String(photoObject.likes);
@@ -45,14 +53,6 @@ const generateFullSize = function (photoObject) {
 
   generateComments(commentsArr.slice(0, STEP_COUNT));
 };
-
-function hideLoadBtn () {
-  if (renderedComments === commentsArr.length) {
-    loadButton.classList.add('hidden');
-  } else {
-    loadButton.classList.remove('hidden');
-  }
-}
 
 const onModalOnEsc = (evt) => {
   if (isEscapeKey(evt)) {
@@ -66,9 +66,9 @@ const onModalOnButton = (evt) => {
   closeModal();
 };
 
-function addComments () {
+const addComments = () => {
   generateComments(commentsArr.slice(renderedComments, renderedComments + STEP_COUNT));
-}
+};
 
 function closeModal () {
   body.classList.remove('modal-open');
@@ -88,9 +88,9 @@ function openModal () {
   loadButton.addEventListener('click', addComments);
 }
 
-function dataComments (data) {
+const showComments = (data) => {
 
-  miniContainer.addEventListener('click', (evt) => {
+  picturesContainer.addEventListener('click', (evt) => {
     const currentPicture = evt.target.closest('.picture');
     if (currentPicture) {
       const currentObject = data.find((item) => item.id === Number(currentPicture.dataset.id));
@@ -99,5 +99,6 @@ function dataComments (data) {
       generateFullSize(currentObject);
     }
   });
-}
-export {openModal, closeModal, dataComments};
+};
+
+export {openModal, closeModal, showComments};
