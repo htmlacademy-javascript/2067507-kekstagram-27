@@ -1,4 +1,6 @@
 import { checkStringLength } from './util.js';
+import { sendData } from './fetch.js';
+
 const HASTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_HASH_COUNT = 5;
 const TEXTAREA_MAX_LENGHT = 140;
@@ -74,30 +76,20 @@ const setUserFormSubmit = (onSuccess, onError) => {
     if (pristine.validate()) {
       savingPhoto();
       const formData = new FormData(evt.target);
-      fetch(
-        'https://27.javascript.pages.academy/kekstagram',
-        {
-          method: 'POST',
-          body: formData,
-        },
-      ).then((response) => {
-        if (response.ok) {
-          unSavingPhoto();
-          onSuccess();
-          body.style.overflow = 'unset';
-        } else {
-          unSavingPhoto();
-          onError();
-          body.style.overflow = 'unset';
-        }
-      })
-        .catch(() => {
-          unSavingPhoto();
-          onError();
-          body.style.overflow = 'unset';
-        });
+      sendData(() => {
+        unSavingPhoto();
+        onSuccess();
+      }, () => {
+        unSavingPhoto();
+        onError();
+      },
+      formData);
     }
   });
 };
 
-export { setUserFormSubmit, savingPhoto, unSavingPhoto };
+const resetValidation = () => {
+  pristine.reset();
+};
+
+export { setUserFormSubmit, savingPhoto, unSavingPhoto, resetValidation };

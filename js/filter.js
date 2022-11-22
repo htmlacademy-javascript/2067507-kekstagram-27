@@ -74,7 +74,7 @@ noUiSlider.create(filterRange, {
   connect: 'lower',
 });
 
-const isDefault = () => {
+const checkIsDefault = () => {
   if (chosenEffect === noneEffect) {
     filterRange.classList.add('hidden');
     filterPreview.style.filter = 'none';
@@ -84,7 +84,7 @@ const isDefault = () => {
 };
 
 const updateSlider = () => {
-  isDefault();
+  checkIsDefault();
   filterRange.noUiSlider.updateOptions({
     range: {
       min: chosenEffect.min,

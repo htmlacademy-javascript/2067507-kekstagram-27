@@ -1,6 +1,7 @@
 import {isEscapeKey} from './util.js';
 import { resetScale } from './scale.js';
 import { resetEffects } from './filter.js';
+import { resetValidation } from './form.js';
 
 const inputUpload = document.querySelector('#upload-file');
 const photoEditorModal = document.querySelector('.img-upload__overlay');
@@ -36,9 +37,11 @@ const openEditorOnErr = () => {
 };
 
 const openEditor = () => {
+  resetValidation();
   resetScale();
   resetEffects();
   openEditorOnErr();
+
 };
 
 function closeEditor () {

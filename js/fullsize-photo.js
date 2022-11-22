@@ -66,7 +66,7 @@ const onModalOnButton = (evt) => {
   closeModal();
 };
 
-const addComments = () => {
+const onAddComments = () => {
   generateComments(commentsArr.slice(renderedComments, renderedComments + STEP_COUNT));
 };
 
@@ -77,7 +77,7 @@ function closeModal () {
   escButton.removeEventListener('click', onModalOnButton);
   commentsArr = [];
   renderedComments = 0;
-  loadButton.removeEventListener('click', addComments);
+  loadButton.removeEventListener('click', onAddComments);
 }
 
 function openModal () {
@@ -85,7 +85,7 @@ function openModal () {
   fullModal.classList.remove('hidden');
   document.addEventListener('keydown', onModalOnEsc);
   escButton.addEventListener('click', onModalOnButton);
-  loadButton.addEventListener('click', addComments);
+  loadButton.addEventListener('click', onAddComments);
 }
 
 const showComments = (data) => {

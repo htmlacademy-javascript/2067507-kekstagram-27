@@ -32,19 +32,19 @@ const onMessageOnEsc = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     if(document.querySelector('.success')) {
-      hideMessageOk();
+      onHideMessageOk();
     }
     else {
-      hideMessageErr();
+      onHideMessageErr();
     }
   }
 };
 
 const onWindowClick = (evt) => {
   if (evt.target === document.querySelector('.success')) {
-    hideMessageOk();
+    onHideMessageOk();
   } else if (evt.target === document.querySelector('.error')) {
-    hideMessageErr();
+    onHideMessageErr();
   }
 };
 
@@ -55,24 +55,26 @@ const showErrUpload = () => {
   const errorButtonErr = photoElementErr.querySelector('.error__button');
   closeEditor();
   body.style.overflow = 'hidden';
-  errorButtonErr.addEventListener('click', hideMessageErr);
+  errorButtonErr.addEventListener('click', onHideMessageErr);
   document.addEventListener('keydown', onMessageOnEsc);
   body.addEventListener('click', onWindowClick);
 };
 
-function hideMessageErr () {
+function onHideMessageErr () {
   openEditorOnErr();
   const errorButtonErr = photoElementErr.querySelector('.error__button');
-  errorButtonErr.removeEventListener('click', hideMessageErr);
+  errorButtonErr.removeEventListener('click', onHideMessageErr);
   document.removeEventListener('keydown', onMessageOnEsc);
+  body.style.overflow = 'auto';
   photoElementErr.remove();
 }
 
-function hideMessageOk () {
+function onHideMessageOk () {
   const successButtonOk = photoElementOk.querySelector('.success__button');
-  successButtonOk.removeEventListener('click', hideMessageOk);
+  successButtonOk.removeEventListener('click', onHideMessageOk);
   document.removeEventListener('keydown', onMessageOnEsc);
   body.removeEventListener('click', onWindowClick);
+  body.style.overflow = 'auto';
   photoElementOk.remove();
 }
 
@@ -84,12 +86,12 @@ const showOkUpload = () => {
   const successButtonOk = photoElementOk.querySelector('.success__button');
   closeEditor();
   resetEditor();
-  successButtonOk.addEventListener('click', hideMessageOk);
+  successButtonOk.addEventListener('click', onHideMessageOk);
   document.addEventListener('keydown', onMessageOnEsc);
   body.addEventListener('click', onWindowClick);
 };
 
-const errorGet = () => {
+const getError = () => {
   const div = document.createElement('div');
   div.classList.add('error-loading');
   div.textContent = 'Ошибка при загрузке файлов';
@@ -125,5 +127,5 @@ const sortingGetVisible = () => {
   sortBlock.classList.remove('img-filters--inactive');
 };
 
-export {getRandomPositiveInteger, checkStringLength, isEscapeKey, showErrUpload, showOkUpload, errorGet, sortingGetVisible, debounce, getRandomPhotos};
+export {getRandomPositiveInteger, checkStringLength, isEscapeKey, showErrUpload, showOkUpload, getError, sortingGetVisible, debounce, getRandomPhotos};
 
