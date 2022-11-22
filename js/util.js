@@ -1,7 +1,16 @@
 import { closeEditor, resetEditor, openEditorOnErr } from './upload.js';
+const errTemplate = document.querySelector('#error').content;
+const errBlock = errTemplate.querySelector('.error');
+const body = document.querySelector('body');
 
+const okTemplate = document.querySelector('#success').content;
+const okBlock = okTemplate.querySelector('.success');
+const photoElementErr = errBlock.cloneNode(true);
+const photoElementOk = okBlock.cloneNode(true);
+
+const sortBlock = document.querySelector('.img-filters');
 //Функция для вычисления рандомного числа
-function getRandomPositiveInteger(a, b) {
+const getRandomPositiveInteger = (a, b) => {
   if (a < 0 || b < 0) {
     return NaN;
   }
@@ -12,47 +21,30 @@ function getRandomPositiveInteger(a, b) {
   const result = Math.random() * (upper - lower + 1) + lower;
 
   return Math.floor(result);
-}
-
-getRandomPositiveInteger();
+};
 
 //Функция для вычисления макс длины строки
-function checkStringLength(string, length) {
-  return string.length <= length;
-}
-
-checkStringLength('ghb', 4);
+const checkStringLength = (string, length) => string.length <= length;
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
-
-
-const errTemplate = document.querySelector('#error').content;
-const errBlock = errTemplate.querySelector('.error');
-const body = document.querySelector('body');
-
-const okTemplate = document.querySelector('#success').content;
-const okBlock = okTemplate.querySelector('.success');
-const photoElementErr = errBlock.cloneNode(true);
-const photoElementOk = okBlock.cloneNode(true);
-
 
 const onMessageOnEsc = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     if(document.querySelector('.success')) {
-      hideMessageOk();
+      onHideMessageOk();
     }
     else {
-      hideMessageErr();
+      onHideMessageErr();
     }
   }
 };
 
 const onWindowClick = (evt) => {
   if (evt.target === document.querySelector('.success')) {
-    hideMessageOk();
+    onHideMessageOk();
   } else if (evt.target === document.querySelector('.error')) {
-    hideMessageErr();
+    onHideMessageErr();
   }
 };
 
@@ -63,24 +55,26 @@ const showErrUpload = () => {
   const errorButtonErr = photoElementErr.querySelector('.error__button');
   closeEditor();
   body.style.overflow = 'hidden';
-  errorButtonErr.addEventListener('click', hideMessageErr);
+  errorButtonErr.addEventListener('click', onHideMessageErr);
   document.addEventListener('keydown', onMessageOnEsc);
   body.addEventListener('click', onWindowClick);
 };
 
-function hideMessageErr () {
+function onHideMessageErr () {
   openEditorOnErr();
   const errorButtonErr = photoElementErr.querySelector('.error__button');
-  errorButtonErr.removeEventListener('click', hideMessageErr);
+  errorButtonErr.removeEventListener('click', onHideMessageErr);
   document.removeEventListener('keydown', onMessageOnEsc);
+  body.style.overflow = 'auto';
   photoElementErr.remove();
 }
 
-function hideMessageOk () {
+function onHideMessageOk () {
   const successButtonOk = photoElementOk.querySelector('.success__button');
-  successButtonOk.removeEventListener('click', hideMessageOk);
+  successButtonOk.removeEventListener('click', onHideMessageOk);
   document.removeEventListener('keydown', onMessageOnEsc);
   body.removeEventListener('click', onWindowClick);
+  body.style.overflow = 'auto';
   photoElementOk.remove();
 }
 
@@ -92,12 +86,12 @@ const showOkUpload = () => {
   const successButtonOk = photoElementOk.querySelector('.success__button');
   closeEditor();
   resetEditor();
-  successButtonOk.addEventListener('click', hideMessageOk);
+  successButtonOk.addEventListener('click', onHideMessageOk);
   document.addEventListener('keydown', onMessageOnEsc);
   body.addEventListener('click', onWindowClick);
 };
 
-const onErrorGet = () => {
+const getError = () => {
   const div = document.createElement('div');
   div.classList.add('error-loading');
   div.textContent = 'Ошибка при загрузке файлов';
@@ -113,21 +107,25 @@ const debounce = (callback, timeoutDelay) => {
 };
 
 const getRandomPhotos = (array, quantity) => {
-  const newArray = [];
+  const newPhotos = [];
 
   const createRandomIndex = () => {
     const index = Math.floor(Math.random() * array.length);
-    if(newArray.includes(array[index])) {
+    if(newPhotos.includes(array[index])) {
       return createRandomIndex();
     }
     return index;
   };
 
   for (let i = 0; i < quantity; i++) {
-    newArray.push(array[createRandomIndex()]);
+    newPhotos.push(array[createRandomIndex()]);
   }
-  return newArray;
+  return newPhotos;
 };
 
-export {getRandomPositiveInteger, checkStringLength, isEscapeKey, showErrUpload, showOkUpload, onErrorGet, debounce, getRandomPhotos};
+const sortingGetVisible = () => {
+  sortBlock.classList.remove('img-filters--inactive');
+};
+
+export {getRandomPositiveInteger, checkStringLength, isEscapeKey, showErrUpload, showOkUpload, getError, sortingGetVisible, debounce, getRandomPhotos};
 

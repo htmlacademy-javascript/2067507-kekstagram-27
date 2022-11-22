@@ -1,4 +1,6 @@
 import { checkStringLength } from './util.js';
+import { sendData } from './fetch.js';
+
 const HASTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_HASH_COUNT = 5;
 const TEXTAREA_MAX_LENGHT = 140;
@@ -16,43 +18,41 @@ const pristine = new Pristine(uploadForm, {
 }
 );
 
-function validateTextarea(value) {
-  return checkStringLength(value, TEXTAREA_MAX_LENGHT);
-}
+const validateTextarea = (value) => checkStringLength(value, TEXTAREA_MAX_LENGHT);
 
-function prepareInputValue () {
+const prepareInputValue = () => {
   const hashtags = hashtagInput.value;
   const hashtagArray = hashtags.trim().split(' ');
   const copyHashtagArray = hashtagArray.map((element) => element.toLowerCase());
 
   return { copyHashtagArray, hashtagArray };
-}
+};
 
-function hasDuplicates() {
-  const { copyHashtagArray, hashtagArray} = prepareInputValue();
+const checkDuplicates = () => {
+  const { copyHashtagArray, hashtagArray } = prepareInputValue();
   return new Set(copyHashtagArray).size === hashtagArray.length;
-}
+};
 
-function hasValidCount() {
-  const { copyHashtagArray} = prepareInputValue();
+const checkValidCount = () => {
+  const { copyHashtagArray } = prepareInputValue();
   return copyHashtagArray.length <= MAX_HASH_COUNT;
-}
+};
 
-function isValidHash () {
+const checkValidHash = () => {
   if (hashtagInput.value !== '') {
     return hashtagInput.value.split(' ').every((hastag) => HASTAG.test(hastag));
   }
   return true;
-}
+};
 
 pristine.addValidator(
   uploadForm.querySelector('.text__description'),
   validateTextarea,
   `Длина сообщения не должная быть больше ${TEXTAREA_MAX_LENGHT}`);
 
-pristine.addValidator(hashtagInput, hasDuplicates, 'Хештеги не должны повторяться');
-pristine.addValidator(hashtagInput, hasValidCount, 'Максимальное кол-во 5 хештегов');
-pristine.addValidator(hashtagInput, isValidHash, 'Хэштег должен начинаться с # и состоять из букв и чисел');
+pristine.addValidator(hashtagInput, checkDuplicates, 'Хештеги не должны повторяться');
+pristine.addValidator(hashtagInput, checkValidCount, 'Максимальное кол-во 5 хештегов');
+pristine.addValidator(hashtagInput, checkValidHash, 'Хэштег должен начинаться с # и состоять из букв и чисел');
 
 
 const savingPhoto = () => {
@@ -62,6 +62,7 @@ const savingPhoto = () => {
   photoFragment.append(photoElement);
   body.append(photoFragment);
 };
+
 
 const unSavingPhoto = () => {
   const uploadMessage = document.querySelector('.img-upload__message');
@@ -75,26 +76,20 @@ const setUserFormSubmit = (onSuccess, onError) => {
     if (pristine.validate()) {
       savingPhoto();
       const formData = new FormData(evt.target);
-      fetch(
-        'https://27.javascript.pages.academy/kekstagram',
-        {
-          method: 'POST',
-          body: formData,
-        },
-      ).then((response) => {
-        if (response.ok) {
-          unSavingPhoto();
-          onSuccess();
-        } else {
-          unSavingPhoto();
-          onError();
-        }})
-        .catch(() => {
-          unSavingPhoto();
-          onError();
-        });
+      sendData(() => {
+        unSavingPhoto();
+        onSuccess();
+      }, () => {
+        unSavingPhoto();
+        onError();
+      },
+      formData);
     }
   });
 };
 
-export {setUserFormSubmit, savingPhoto};
+const resetValidation = () => {
+  pristine.reset();
+};
+
+export { setUserFormSubmit, savingPhoto, unSavingPhoto, resetValidation };

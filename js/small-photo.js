@@ -1,8 +1,8 @@
-const pictureTemp = document.querySelector('#picture').content;
-const picture = pictureTemp.querySelector('.picture');
-const miniContainer = document.querySelector('.pictures');
+const pictureTemplate = document.querySelector('#picture').content;
+const picture = pictureTemplate.querySelector('.picture');
+const picturesContainer = document.querySelector('.pictures');
 
-const dataChanged = (data) => {
+const changeData = (data) => {
   const photoFragment = document.createDocumentFragment();
 
   data.forEach((item) => {
@@ -15,8 +15,8 @@ const dataChanged = (data) => {
     photoFragment.appendChild(photoElement);
   });
 
-  miniContainer.appendChild(photoFragment);
+  picturesContainer.appendChild(photoFragment);
 };
 
-export {miniContainer, dataChanged};
-// {id, url, comments, likes, description}
+export {picturesContainer, changeData};
+

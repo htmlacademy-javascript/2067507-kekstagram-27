@@ -1,4 +1,4 @@
-import { dataChanged } from './small-photo.js';
+import { changeData } from './small-photo.js';
 import { debounce, getRandomPhotos } from './util.js';
 
 const FILTER_DELAY = 500;
@@ -19,15 +19,15 @@ const clearPhotoList = () => {
 
 const discussedFunc = (photos) => {
   const discussedPhotos = photos.slice().sort((a, b) => a.likes > b.likes ? -1 : 1);
-  dataChanged(discussedPhotos);
+  changeData(discussedPhotos);
 };
 
 const defaultFunc = (photos) => {
-  dataChanged(photos);
+  changeData(photos);
 };
 
 const randomFunc = (photos) => {
-  dataChanged(getRandomPhotos(photos, RANDOM_FILTER_COUNT));
+  changeData(getRandomPhotos(photos, RANDOM_FILTER_COUNT));
 };
 
 const filterPhotoSwitch = debounce((photos, filterId) => {
