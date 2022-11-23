@@ -50,11 +50,9 @@ pristine.addValidator(
   validateTextarea,
   `Длина сообщения не должная быть больше ${TEXTAREA_MAX_LENGHT}`);
 
-pristine.addValidator(hashtagInput, checkDuplicates, 'Хештеги не должны повторяться');
-pristine.addValidator(hashtagInput, checkValidCount, 'Максимальное кол-во 5 хештегов');
-pristine.addValidator(hashtagInput, checkValidHash, 'Хэштег должен начинаться с # и состоять из букв и чисел');
-
-
+pristine.addValidator(hashtagInput, checkDuplicates, 'Хештеги не должны повторяться', 1, true);
+pristine.addValidator(hashtagInput, checkValidCount, 'Максимальное кол-во 5 хештегов', 1, true);
+pristine.addValidator(hashtagInput, checkValidHash, '- хэштег должен начинаться с #,<br> - состоять из букв и чисел, <br> - максимальная длина хештега 20 символов', 1, true);
 const savingPhoto = () => {
   const uploadMessage = savingTemplate.querySelector('.img-upload__message');
   const photoFragment = document.createDocumentFragment();

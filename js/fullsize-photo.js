@@ -16,10 +16,10 @@ const loadButton = document.querySelector('.social__comments-loader');
 const commentsLoaded = document.querySelector('.comments-loaded');
 
 let renderedComments = 0;
-let commentsArr = [];
+let comments = [];
 
 const hideLoadButton = () => {
-  if (renderedComments === commentsArr.length) {
+  if (renderedComments === comments.length) {
     loadButton.classList.add('hidden');
   } else {
     loadButton.classList.remove('hidden');
@@ -49,9 +49,9 @@ const generateFullSize = (photoObject) => {
 
   photoComments.innerHTML = '';
 
-  commentsArr = photoObject.comments;
+  comments = photoObject.comments;
 
-  generateComments(commentsArr.slice(0, STEP_COUNT));
+  generateComments(comments.slice(0, STEP_COUNT));
 };
 
 const onModalOnEsc = (evt) => {
@@ -67,7 +67,7 @@ const onModalOnButton = (evt) => {
 };
 
 const onAddComments = () => {
-  generateComments(commentsArr.slice(renderedComments, renderedComments + STEP_COUNT));
+  generateComments(comments.slice(renderedComments, renderedComments + STEP_COUNT));
 };
 
 function closeModal () {
@@ -75,7 +75,7 @@ function closeModal () {
   fullModal.classList.add('hidden');
   document.removeEventListener('keydown', onModalOnEsc);
   escButton.removeEventListener('click', onModalOnButton);
-  commentsArr = [];
+  comments = [];
   renderedComments = 0;
   loadButton.removeEventListener('click', onAddComments);
 }
