@@ -9,21 +9,7 @@ const photoElementErr = errBlock.cloneNode(true);
 const photoElementOk = okBlock.cloneNode(true);
 
 const sortBlock = document.querySelector('.img-filters');
-//Функция для вычисления рандомного числа
-const getRandomPositiveInteger = (a, b) => {
-  if (a < 0 || b < 0) {
-    return NaN;
-  }
 
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  const result = Math.random() * (upper - lower + 1) + lower;
-
-  return Math.floor(result);
-};
-
-//Функция для вычисления макс длины строки
 const checkStringLength = (string, length) => string.length <= length;
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
@@ -127,5 +113,5 @@ const sortingGetVisible = () => {
   sortBlock.classList.remove('img-filters--inactive');
 };
 
-export {getRandomPositiveInteger, checkStringLength, isEscapeKey, showErrUpload, showOkUpload, getError, sortingGetVisible, debounce, getRandomPhotos};
+export {checkStringLength, isEscapeKey, showErrUpload, showOkUpload, getError, sortingGetVisible, debounce, getRandomPhotos};
 
