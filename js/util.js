@@ -7,7 +7,6 @@ const okTemplate = document.querySelector('#success').content;
 const okBlock = okTemplate.querySelector('.success');
 const photoElementErr = errBlock.cloneNode(true);
 const photoElementOk = okBlock.cloneNode(true);
-
 const sortBlock = document.querySelector('.img-filters');
 
 const checkStringLength = (string, length) => string.length <= length;
