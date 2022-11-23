@@ -57,6 +57,7 @@ const filterRange = document.querySelector('.effect-level__slider');
 const filterInput = document.querySelector('.effect-level__value');
 const formUpload = document.querySelector('.img-upload__form');
 const filterPreview = document.querySelector('.img-upload__preview img');
+const sliderContainer = document.querySelector('.effect-level');
 const effectsClass = 'effects__preview--';
 
 const noneEffect = EFFECTS[0];
@@ -76,10 +77,10 @@ noUiSlider.create(filterRange, {
 
 const checkIsDefault = () => {
   if (chosenEffect === noneEffect) {
-    filterRange.classList.add('hidden');
+    sliderContainer.classList.add('hidden');
     filterPreview.style.filter = 'none';
   } else {
-    filterRange.classList.remove('hidden');
+    sliderContainer.classList.remove('hidden');
   }
 };
 

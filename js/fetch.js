@@ -1,5 +1,8 @@
+const UPLOAD_SERVER = 'https://27.javascript.pages.academy/kekstagram';
+const DOWNLOAD_SERVER = 'https://27.javascript.pages.academy/kekstagram/data';
+
 const getData = (onSuccess, onError) => {
-  fetch('https://27.javascript.pages.academy/kekstagram/data')
+  fetch(DOWNLOAD_SERVER)
     .then((response) => response.json())
     .then((photos) => {
       onSuccess(photos);
@@ -11,7 +14,7 @@ const getData = (onSuccess, onError) => {
 
 const sendData = (onSuccess, onError, body) => {
   fetch(
-    'https://27.javascript.pages.academy/kekstagram',
+    UPLOAD_SERVER,
     {
       method: 'POST',
       body
